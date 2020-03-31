@@ -1,4 +1,5 @@
 var express    = require('express');
+var bodyParser = require('body-parser');
 var mysql      = require('mysql');
 var dbconfig   = require('./config/database.js');
 var connection = mysql.createConnection(dbconfig);
@@ -7,6 +8,7 @@ var app = express();
 
 // configuration ===============================================================
 app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -30,6 +32,22 @@ app.get('/json', function(req, res){
 app.get('/emp', function(req, res, next) {
 	res.redirect('/emp/1');
 });
+
+app.get('/emp/add', function(req, res, next) {
+	res.render('add', {title: '게시판 글쓰기'});
+});
+app.post('/emp/add', function(req, res, next) {
+    var name=req.body.name;
+    var pay=req.body.pay;
+	var params=[name,pay];
+	console.log(params);
+	var sql="insert into emp01 (name,nalja,pay) values (?,now(),?)";
+	connection.query(sql, params, function(err, rows) {
+    if(err) throw err;
+	res.redirect('/emp/1');
+  });
+});
+
 app.get('/emp/:page', function(req, res, next) {
     var page = req.params.page;
     console.log('param:'+page);
@@ -43,3 +61,23 @@ app.get('/emp/:page', function(req, res, next) {
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,11 @@
+form{
+}
+form>div{
+    width:50%;
+    margin:0px auto;
+}
+
+form>div>label{
+    width:40%;
+    display:inline-block;
+}
