@@ -6,13 +6,15 @@ var connection = mysql.createConnection(dbconfig);
 var app = express();
 
 // configuration ===============================================================
+app.use(express.static('public'));
+
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
 app.set('port', process.env.PORT || 3000);
 
-app.get('/', function(req, res){
+app.get('/msg', function(req, res){
   res.send('Root');
 });
 
